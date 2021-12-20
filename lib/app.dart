@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:milkmoms/first.dart';
 import 'package:milkmoms/second.dart';
 
+import 'enter_screen.dart';
+
 
 
 class App extends StatelessWidget {
@@ -11,10 +13,12 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
-        '/frst': (context) => First(),
-        '/scnd': (context) => Second()
+        '/frst': (context) => const First(),
+        '/scnd': (context) => const Second(),
+        '/enter': (context) => const Enter()
+
       },
-      initialRoute: '/frst',
+      initialRoute: '/enter',
     );
   }
 }

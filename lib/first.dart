@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:async/async.dart';
+import 'package:path/path.dart';
+import 'dart:io';
 
 class First extends StatefulWidget {
   const First({Key? key}) : super(key: key);
@@ -7,6 +12,7 @@ class First extends StatefulWidget {
   @override
   _FirstState createState() => _FirstState();
 }
+
 
 class _FirstState extends State<First> {
   @override
@@ -41,8 +47,10 @@ class _FirstState extends State<First> {
             ),
             child: Text('text')),
 
-        ElevatedButton(onPressed: (){
-          FlutterAlarmClock.createAlarm(120, 00);
+        ElevatedButton(onPressed: () {
+          //FlutterAlarmClock.createAlarm(120, 00);
+          //getDB();
+
 
 
         },
@@ -66,10 +74,24 @@ class _FirstState extends State<First> {
               ),
               minimumSize: MaterialStateProperty.all(Size.fromRadius(50)),
             ),
-            child: Text('add alatm')),
+            child: Text('DB')),
 
         Center(child: Text('tap to go forward')),
       ],),
     );
   }
 }
+
+
+// class DbHelper {
+//   DbHelper._privateConstructor();
+//   static final DbHelper instance =  DbHelper._privateConstructor();
+//
+//   static Database? _database;
+//   Future<Database> get database async => _database ??= await _initDatabase();
+//
+//   Future<Database> _initDatabase() async {
+//     Directory documentsDirectory = await getApplicationDocumentsDirectory();
+//     String path = join (documentsDirectory.path,)
+//   }
+// }
