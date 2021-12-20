@@ -14,8 +14,8 @@ class Enter extends StatefulWidget {
   _FirstState createState() => _FirstState();
 }
 
-var logintxt;
-var passwtxt;
+var _logintxt;
+var _passwtxt;
 
 class _FirstState extends State<Enter> {
   @override
@@ -28,7 +28,16 @@ class _FirstState extends State<Enter> {
           _buildLogo(),
           Center(child: _buildLogin()),
           Center(child: _buildPassword()),
-          _buildEnterButton(),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+
+            children: [
+            _buildEnterButton(context),
+            _buildAuthButton()
+          ],)//две кнопки
+
+
 
 
 
@@ -66,7 +75,7 @@ Widget _buildLogin() => Container(
         flex: 2,
         child: TextFormField(
             onChanged: (text){
-              logintxt = text;
+              _logintxt = text;
             },
           textAlign: TextAlign.left,
           style: const TextStyle(fontSize: 16.0, color: Color.fromRGBO(
@@ -119,7 +128,7 @@ Widget _buildPassword() => Container(
         flex: 2,
         child: TextField(
           onChanged: (text){
-            passwtxt = text;
+            _passwtxt = text;
           },
           obscureText: true,
           textAlign: TextAlign.left,
@@ -154,16 +163,43 @@ Widget _buildPassword() => Container(
   ),
 );// Контейнер с паролем
 
-Widget _buildEnterButton() => GestureDetector(
+Widget _buildEnterButton(context) => GestureDetector(//РЕГИСТРАЦИЯ
     child:   Container(
-      child: const Text("войти",
-          style: TextStyle(fontSize: 17.0, color: Color.fromRGBO(
+      child: const Text("Регистрация",
+          style: TextStyle(fontSize: 15.0, color: Color.fromRGBO(
               88, 88, 88, 1.0)),),
     alignment: Alignment.center,
-    padding: EdgeInsets.all(4.0),
-    margin: EdgeInsets.only(top: 15, bottom: 90),
-    height: 35.0,
-    width: 115,
+    padding: EdgeInsets.all(0.0),
+    margin: EdgeInsets.only(top: 10, bottom: 90),
+    height: 30.0,
+    width: 130,
+    clipBehavior : Clip.antiAlias,
+    decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(80)),
+        color: Color.fromRGBO(0, 0, 0, 0.30196078431372547)
+    ),
+  ),
+  onTap: () async {
+      Navigator.of(context).pushNamed('/auth');
+      //DatabaseHelper.instance.createTable();
+      //DatabaseHelper.instance.getInfo(_logintxt.toString(),_passwtxt.toString());
+      //DatabaseHelper.instance.deleteRaw(2);
+    //DatabaseHelper.instance.add(logintxt, passwtxt);
+      //DatabaseHelper.instance.DropTable("Account");
+    //print ("Tap on container");
+  },
+);
+
+Widget _buildAuthButton() => GestureDetector(//ВХОД
+  child:   Container(
+    child: const Text("Вход",
+      style: TextStyle(fontSize: 15.0, color: Color.fromRGBO(
+          88, 88, 88, 1.0)),),
+    alignment: Alignment.center,
+    padding: EdgeInsets.all(0.0),
+    margin: EdgeInsets.only(top: 10, bottom: 90, left: 15),
+    height: 30.0,
+    width: 105,
     clipBehavior : Clip.antiAlias,
     decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(80)),
@@ -171,11 +207,13 @@ Widget _buildEnterButton() => GestureDetector(
     ),
   ),
   onTap: () async {
-      //DatabaseHelper.instance.createTable();
-      DatabaseHelper.instance.getInfo(logintxt.toString(),passwtxt.toString());
-      //DatabaseHelper.instance.deleteRaw(2);
-    //DatabaseHelper.instance.add(logintxt, passwtxt);
-      //DatabaseHelper.instance.DropTable("Account");
+    //DatabaseHelper.instance.getInfo();
+    //DatabaseHelper.instance.add1();
+    //DatabaseHelper.instance.createTable();
+    //DatabaseHelper.instance.getInfo(_logintxt.toString(),_passwtxt.toString());
+    //DatabaseHelper.instance.deleteRaw(2);
+    //DatabaseHelper.instance.add(_logintxt, _passwtxt);
+    //DatabaseHelper.instance.DropTable("Account");
     print ("Tap on container");
   },
 );
@@ -184,27 +222,6 @@ Widget _buildEnterButton() => GestureDetector(
 
 
 
-class Account {
-  final int? id_account;
-  final String Login;
-  final String Password;
-
-  Account({this.id_account, required this.Login, required this.Password});
-
-  factory Account.fromMap(Map<String, dynamic> json) => Account(
-    id_account: json['id_account'],
-    Login: json['Login'],
-    Password: json['Password']
-  );
-
-  Map<String, dynamic> toMap() {
-    return {
-      'id_account': id_account,
-      'Login': Login,
-      'Password': Password
-    };
-  }
-}
 
 
 // ElevatedButton(onPressed: (){

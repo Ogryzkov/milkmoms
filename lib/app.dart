@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:milkmoms/first.dart';
 import 'package:milkmoms/second.dart';
 
+import 'auth_screen.dart';
 import 'enter_screen.dart';
 
 
@@ -15,7 +16,9 @@ class App extends StatelessWidget {
       routes: {
         '/frst': (context) => const First(),
         '/scnd': (context) => const Second(),
-        '/enter': (context) => const Enter()
+        '/enter': (context) => const Enter(),
+        '/auth': (context) => const Auth(),
+
 
       },
       initialRoute: '/enter',

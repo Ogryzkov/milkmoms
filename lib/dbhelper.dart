@@ -1,9 +1,8 @@
 import 'dart:io';
-import 'package:milkmoms/DbHelper.dart';
+import 'package:milkmoms/tablesclasses.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-import 'enter_screen.dart';
 import 'main.dart';
 
 
@@ -16,25 +15,40 @@ class DatabaseHelper {
 
   Future<Database> _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, 'groceries.db');
+    String path = join(documentsDirectory.path, 'MMos.db');
     return await openDatabase(
       path,
       version: 1,
+      onCreate: _onCreate
     );
   }
 
 
-  void getInfo(dynamic login, dynamic password) async {
+
+
+Future<int> getInfo(dynamic login, dynamic password) async {
     Database db = await instance.database;
-    //print(login);
     var Select = await db.rawQuery('SELECT * FROM Account WHERE Login="$login" and Password="$password"');
-    //db.query("Account",columns: ["Login", "Password"], where: "Login = ?", whereArgs: [login]);
     if (Select.isNotEmpty) print('NotEmpty');
       else print('Empty');
     List<Account> Selects = Select.isNotEmpty
         ? Select.map((c) => Account.fromMap(c)).toList()
         : [];
     String Log = Selects.map((e) => e.id_account).toString();
+    Log = Log.substring(1,Log.length-1);
+    int id = int.parse(Log);
+    return id;
+  }
+
+void getInfoCustomer(dynamic id) async {
+    Database db = await instance.database;
+    var Select = await db.rawQuery('SELECT * FROM Customer WHERE id_account="$id"');
+    if (Select.isNotEmpty) print('NotEmpty');
+    else print('Empty');
+    List<Customer> Selects = Select.isNotEmpty
+        ? Select.map((c) => Customer.fromMap(c)).toList()
+        : [];
+    String Log = Selects.map((e) => e.L_name).toString();
     Log = Log.substring(1,Log.length-1);
     print(Log);
   }
@@ -49,21 +63,49 @@ class DatabaseHelper {
     return await db.delete('Account', where: 'id_account = ?', whereArgs: [idAccount]);
   }
 
-  Future<int> add(dynamic name, dynamic password) async {
+  Future<int> addAccount(dynamic Login, dynamic Password) async {
     Database db = await instance.database;
     var acc = {
-      'Login': name,
-      'Password': password
+      'Login': Login,
+      'Password': Password,
     };
     return await db.insert('Account', acc);
+  }
+
+  Future<int> addCustomer(int id_account, dynamic F_name, dynamic L_name, dynamic Street, dynamic Apartment, dynamic Requisites, dynamic Tel) async {
+    Database db = await instance.database;
+    var acc = {
+      'id_account': id_account,
+      'F_name': F_name,
+      'L_name': L_name,
+      'Street': Street,
+      'Apartment': Apartment,
+      'Requisites': Requisites,
+      'Tel': Tel,
+    };
+    return await db.insert('Customer', acc);
   }
 
 
 
   Future _onCreate(Database db, int version) async {
     await db.execute('''
+      CREATE TABLE Account(
+          id_account INTEGER PRIMARY KEY AUTOINCREMENT,
+          Login VARCHAR,
+          Password VARCHAR
+      )
+      ''');//account
+    await db.execute('''
+      CREATE TABLE Nations
+          (
+          id_nation INTEGER PRIMARY KEY AUTOINCREMENT,
+          Nation_name VARCHAR
+          )
+      ''');//nations
+    await db.execute('''
       CREATE TABLE Donor(
-          id_donors INTEGER PRIMARY KEY,
+          id_donors INTEGER PRIMARY KEY AUTOINCREMENT,
           F_name VARCHAR,
           L_name VARCHAR,
           Bday DATE,
@@ -76,7 +118,70 @@ class DatabaseHelper {
           Start_Certificate DATE,
           Finish_Certificate DATE
       )
-      ''');
+      ''');//donor
+    await db.execute('''
+      CREATE TABLE Customer
+          (
+          id_customer INTEGER PRIMARY KEY AUTOINCREMENT,
+          id_account INT,
+          F_name VARCHAR,
+          L_name VARCHAR,
+          Street VARCHAR,
+          Apartment VARCHAR,
+          Requisites VARCHAR,
+          Tel VARCHAR,
+          CONSTRAINT Account_rout FOREIGN KEY (id_account) REFERENCES Account (id_account)
+          )
+      ''');//customer
+    await db.execute('''
+      CREATE TABLE Driver
+          (
+          id_driver INTEGER PRIMARY KEY AUTOINCREMENT,
+          F_name VARCHAR,
+          L_name VARCHAR,
+          Tel VARCHAR,
+          BD DATE,
+          Sex VARCHAR
+          )
+      ''');//Driver
+    await db.execute('''
+      CREATE TABLE Shipping_car
+          (
+          id_shipping_car INTEGER PRIMARY KEY AUTOINCREMENT,
+          Car_number VARCHAR,
+          Car_color VARCHAR,
+          Car_model VARCHAR
+          )
+      ''');//Shipping_car
+    await db.execute('''
+      CREATE TABLE Ship
+          (
+          id_ship INTEGER PRIMARY KEY AUTOINCREMENT,
+          id_Shipping_car INT,
+          id_driver INT,
+          CONSTRAINT Car_rout FOREIGN KEY (id_shipping_car) REFERENCES Shipping_car (id_shipping_car),
+          CONSTRAINT Driver_rout FOREIGN KEY (id_driver) REFERENCES Driver (id_driver)
+          )
+      ''');//Ship
+    await db.execute('''
+      CREATE TABLE Orders
+          (
+          id_order INTEGER PRIMARY KEY AUTOINCREMENT,
+          id_donors INT,
+          id_customer INT,
+          id_ship INT,
+          start_order datetime,
+          finish_order datetime,
+          score_order INT,
+          liter_value FLOAT,
+          price_liter FLOAT,
+          price_ful FLOAT,
+          status VARCHAR,
+          CONSTRAINT Donors_rout FOREIGN KEY (id_donors) REFERENCES Donors (id_donors),
+          CONSTRAINT Customer_rout FOREIGN KEY (id_customer) REFERENCES Customer (id_customer),
+          CONSTRAINT Ship_rout FOREIGN KEY (id_ship) REFERENCES Ship (id_ship)
+          )
+      ''');//Orders
   }
 
 
