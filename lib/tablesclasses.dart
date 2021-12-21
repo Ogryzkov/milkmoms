@@ -23,40 +23,69 @@ class Account {
   }
 }
 
+class Registered {
+  final int? id_registered;
+  final int? State;
+  final int? id_account;
+
+
+  Registered({
+    this.id_registered,
+    this.State,
+    this.id_account,
+  });
+
+  factory Registered.fromMap(Map<String, dynamic> json) => Registered(
+      id_registered: json['id_registered'],
+      State: json['State'],
+      id_account: json['id_account']
+  );
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id_registered': id_registered,
+      'State': State,
+      'id_account': id_account
+    };}
+}
+
 class Donor {
   final int? id_donors;
-  final String F_name;
-  final String L_name;
-  final DateTime Bday;
-  final String Address;
-  final int id_nation;
-  final int Score;
-  final String Requisites;
-  final String Tel;
-  final int id_Certificate;
-  final DateTime Start_Certificate;
-  final DateTime Finish_Certificate;
+  final String? F_name;
+  final String? L_name;
+  final String? Bday;
+  final String? Street;
+  final String? Apartment;
+  final int? id_nation;
+  final int? Score;
+  final String? Requisites;
+  final String? Tel;
+  final int? id_Certificate;
+  final String? Start_Certificate;
+  final String? Finish_Certificate;
 
   Donor({
     this.id_donors,
-    required this.F_name,
-    required this.L_name,
-    required this.Bday,
-    required this.Address,
-    required this.id_nation,
-    required this.Score,
-    required this.Requisites,
-    required this.Tel,
-    required this.id_Certificate,
-    required this.Start_Certificate,
-    required this.Finish_Certificate,});
+    this.F_name,
+    this.L_name,
+    this.Bday,
+    this.Street,
+    this.Apartment,
+    this.id_nation,
+    this.Score,
+    this.Requisites,
+    this.Tel,
+    this.id_Certificate,
+    this.Start_Certificate,
+    this.Finish_Certificate,});
 
   factory Donor.fromMap(Map<String, dynamic> json) => Donor(
       id_donors: json['id_donors'],
       F_name: json['F_name'],
       L_name: json['L_name'],
       Bday: json['Bday'],
-      Address: json['Address'],
+      Street: json['Street'],
+      Apartment: json['Apartment'],
       id_nation: json['id_nation'],
       Score: json['Score'],
       Requisites: json['Requisites'],
@@ -72,7 +101,8 @@ class Donor {
       'F_name': F_name,
       'L_name': L_name,
       'Bday': Bday,
-      'Address': Address,
+      'Street': Street,
+      'Apartment': Apartment,
       'id_nation': id_nation,
       'Score': Score,
       'Requisites': Requisites,
@@ -107,23 +137,23 @@ class Nations {
 
 class Customer {
   final int? id_customer;
-  final int id_account;
-  final String F_name;
-  final String L_name;
-  final String Street;
-  final String Apartment;
-  final String Requisites;
-  final String Tel;
+  final int? id_account;
+  final String? F_name;
+  final String? L_name;
+  final String? Street;
+  final String? Apartment;
+  final String? Requisites;
+  final String? Tel;
 
   Customer({
     this.id_customer,
-    required this.id_account,
-    required this.F_name,
-    required this.L_name,
-    required this.Street,
-    required this.Apartment,
-    required this.Requisites,
-    required this.Tel,
+    this.id_account,
+    this.F_name,
+    this.L_name,
+    this.Street,
+    this.Apartment,
+    this.Requisites,
+    this.Tel,
   });
 
   factory Customer.fromMap(Map<String, dynamic> json) => Customer(

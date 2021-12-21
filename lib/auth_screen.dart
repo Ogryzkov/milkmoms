@@ -11,7 +11,7 @@ import 'dbhelper.dart';
 class Auth extends StatefulWidget {
   const Auth({Key? key}) : super(key: key);
   @override
-  _FirstState createState() => _FirstState();
+  _AuthState createState() => _AuthState();
 }
 String Reg = "Зарегистрироваться";
 bool isRegistr = false;
@@ -26,7 +26,7 @@ var tel;
 
 
 
-class _FirstState extends State<Auth> {
+class _AuthState extends State<Auth> {
   double H = 60;
   double W = 220;
   double fontSize = 15;
@@ -89,22 +89,23 @@ class _FirstState extends State<Auth> {
                 ),
                 onTap: () async {
                   if (isRegistr==false) {
-                    // await DatabaseHelper.instance.addAccount(_logintxt, _passwtxt);
+                    await DatabaseHelper.instance.addAccount(_logintxt, _passwtxt);//создаем объект АККАУНТ с логином и паролем
                     //
-                    int id = await DatabaseHelper.instance.getInfo(_logintxt,_passwtxt);
-                    // DatabaseHelper.instance.addCustomer(id, name, surname,street, aps, requits, tel);
-                    DatabaseHelper.instance.getInfoCustomer(id);
+                    int id = await DatabaseHelper.instance.getIdFromAccount(_logintxt,_passwtxt);//Берем у него айдишник
+                    DatabaseHelper.instance.addCustomer(id, name, surname,street, aps, requits, tel);//ВНосим этот айдишник в Объект КАСТОМЕР
+                    //создали аккаунт, заполнили его поля, создали Кастомер, заполнили все его поля
+                    //DatabaseHelper.instance.getInfoCustomer(id);
 
 
                     //DatabaseHelper.instance.add(_logintxt, _passwtxt);
                     //DatabaseHelper.instance.getInfo(_logintxt, _passwtxt);
-                   // isRegistr=true;
+                    isRegistr=true;
                   }
-                //   else {
-                //     setState(() {
-                //     Reg = "Уже зарегистрированы";
-                //   });
-                // }
+                  else {
+                    setState(() {
+                    Reg = "Уже зарегистрированы";
+                  });
+                  }
 
                 //DatabaseHelper.instance.createTable();Navigator.of(context).pushNamed('/frst');
                 //DatabaseHelper.instance.getInfo(_logintxt.toString(),passwtxt.toString());
@@ -168,12 +169,12 @@ Widget _buildLogin(double H, double W, double fontSize) => Container(
                   color: Colors.grey,
                 ), // icon is 48px widget.
               ),
-              enabledBorder: OutlineInputBorder(
+              enabledBorder: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(50.0)),
                 borderSide: BorderSide(
                     color: Color.fromRGBO(115, 127, 137, 1.0), width: 2.5),
               ),
-              focusedBorder: OutlineInputBorder(
+              focusedBorder: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(50.0)),
                 borderSide: BorderSide(
                     color: Color.fromRGBO(96, 163, 199, 1.0), width: 2.5),
