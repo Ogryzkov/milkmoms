@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'dbhelper.dart';
 import 'dart:io';
 
@@ -56,6 +58,7 @@ class Donor {
   final String? Bday;
   final String? Street;
   final String? Apartment;
+  final double? price_liter;
   final int? id_nation;
   final int? Score;
   final String? Requisites;
@@ -71,6 +74,7 @@ class Donor {
     this.Bday,
     this.Street,
     this.Apartment,
+    this.price_liter,
     this.id_nation,
     this.Score,
     this.Requisites,
@@ -86,6 +90,7 @@ class Donor {
       Bday: json['Bday'],
       Street: json['Street'],
       Apartment: json['Apartment'],
+      price_liter: json['price_liter'],
       id_nation: json['id_nation'],
       Score: json['Score'],
       Requisites: json['Requisites'],
@@ -103,6 +108,7 @@ class Donor {
       'Bday': Bday,
       'Street': Street,
       'Apartment': Apartment,
+      'price_liter': price_liter,
       'id_nation': id_nation,
       'Score': Score,
       'Requisites': Requisites,
@@ -283,13 +289,13 @@ class Ship {
 class Orders {
   final int? id_order;
   final int id_donors;
-  final int id_customer;
+  final int id_registered;
+  final int id_account;
   final int id_ship;
-  final DateTime start_order;
-  final DateTime finish_order;
+  final String start_order;
+  final String finish_order;
   final int score_order;
   final double liter_value;
-  final double price_liter;
   final double price_ful;
   final String status;
 
@@ -298,13 +304,13 @@ class Orders {
   Orders({
     this.id_order,
     required this.id_donors,
-    required this.id_customer,
+    required this.id_registered,
+    required this.id_account,
     required this.id_ship,
     required this.start_order,
     required this.finish_order,
     required this.score_order,
     required this.liter_value,
-    required this.price_liter,
     required this.price_ful,
     required this.status,
   });
@@ -313,13 +319,13 @@ class Orders {
       Orders(
           id_order: json['id_order'],
           id_donors: json['id_donors'],
-          id_customer: json['id_customer'],
+          id_registered: json['id_registered'],
+          id_account: json['id_account'],
           id_ship: json['id_ship'],
           start_order: json['start_order'],
           finish_order: json['finish_order'],
           score_order: json['score_order'],
           liter_value: json['liter_value'],
-          price_liter: json['price_liter'],
           price_ful: json['price_ful'],
           status: json['status']
       );
@@ -328,13 +334,13 @@ class Orders {
     return {
       'id_order': id_order,
       'id_donors': id_donors,
-      'id_customer': id_customer,
+      'id_registered': id_registered,
+      'id_account': id_account,
       'id_ship': id_ship,
       'start_order': start_order,
       'finish_order': finish_order,
       'score_order': score_order,
       'liter_value': liter_value,
-      'price_liter': price_liter,
       'price_ful': price_ful,
       'status': status,
     };
